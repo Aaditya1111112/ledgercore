@@ -1,0 +1,371 @@
+
+PL/SQL procedure successfully completed.
+
+
+Sequence created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+01_schema.sql done: 7 tables and 1 sequence created
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+02_constraints_indexes.sql done
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+Commit complete.
+
+03_sample_data.sql done: 5 customers, 7 accounts
+
+Function created.
+
+No errors.
+
+Function created.
+
+No errors.
+04_functions.sql done
+
+Procedure created.
+
+No errors.
+
+Procedure created.
+
+No errors.
+
+Procedure created.
+
+No errors.
+
+Procedure created.
+
+No errors.
+
+Procedure created.
+
+No errors.
+
+View created.
+
+
+View created.
+
+
+View created.
+
+05_procedures.sql done
+
+Package created.
+
+No errors.
+
+Package body created.
+
+No errors.
+06_packages.sql done
+
+Trigger created.
+
+No errors.
+
+Trigger created.
+
+No errors.
+
+Trigger created.
+
+No errors.
+07_triggers.sql done
+Expected rejection: ORA-20004: Insufficient funds: balance 14000.00, requested  
+99999.00                                                                        
+Demo activity committed                                                         
+
+PL/SQL procedure successfully completed.
+
+LedgerCore test run 20261023222821876                                           
+-------------------------------------------------------------                   
+Setup: customer 6, accounts A=8 B=9 C(closed)=10 D(frozen)=11                   
+PASS  T01 Deposit increases balance by exactly 1000.00                          
+PASS  T02 Withdrawal decreases balance by exactly 250.50                        
+PASS  T03 Withdrawal over balance rejected (-20004), balance unchanged          
+PASS  T04 Transfer debits source and credits destination by equal amounts       
+PASS  T05 Transfer to nonexistent account fails with no partial debit           
+PASS  T06 Zero deposit and negative withdrawal rejected (-20001)                
+PASS  T07 Transfer to same account rejected (-20005)                            
+PASS  T08 Deposit to FROZEN, deposit to CLOSED, transfer to FROZEN all rejected 
+(-20003)                                                                        
+PASS  T09 Failure after debit rolls back everything (no balance, entry or       
+transaction change)                                                             
+PASS  T10 Audit has one row per balance change, last row matches T04 old/new    
+balance                                                                         
+PASS  T11 Credits minus debits = balance, and last balance_after = balance      
+PASS  T12 Reconciliation: every account balance matches its ledger              
+PASS  T13 Rejections logged as REJECTED, system failure logged as ERROR (survive
+rollback)                                                                       
+PASS  T14 Direct UPDATE to negative balance blocked by ck_accounts_balance      
+(ORA-02290)                                                                     
+PASS  T15 Updating a ledger entry is blocked by trigger (-20010)                
+PASS  T16 GET_TRANSACTION_COUNT(A) = 3 completed transactions (T01, T02, T04)   
+PASS  T17 Closing an account with money in it is rejected (-20006)              
+-------------------------------------------------------------                   
+RESULT: 17 passed, 0 failed                                                     
+-------------------------------------------------------------                   
+==================================================================              
+STATEMENT  LC0000000008  Test Runner 20261023222821876  (ACTIVE)                
+==================================================================              
+Date                Type        Dr/Cr           Amount       Balance            
+23-OCT-26 22:28     DEPOSIT     CREDIT        1,000.00      1,000.00            
+23-OCT-26 22:28     WITHDRAWAL  DEBIT           250.50        749.50            
+23-OCT-26 22:28     TRANSFER    DEBIT           300.00        449.50            
+------------------------------------------------------------------              
+3 entries. Current balance: 449.50                                              
+HIGH-VALUE COMPLETED TRANSACTIONS (>= 50,000.00)                                
+#2  DEPOSIT        250,000.00  23-OCT-26 22:28  LC0000000002 CREDIT             
+#5  DEPOSIT        120,000.00  23-OCT-26 22:28  LC0000000005 CREDIT             
+#1  DEPOSIT         85,000.00  23-OCT-26 22:28  LC0000000001 CREDIT             
+#6  DEPOSIT         64,000.00  23-OCT-26 22:28  LC0000000006 CREDIT             
+#10  TRANSFER        60,000.00  23-OCT-26 22:28  LC0000000005 DEBIT,            
+LC0000000002 CREDIT                                                             
+5 transaction(s) found                                                          
+MONTHLY ACTIVITY (all accounts)                                                 
+Month       Entries         Credits          Debits             Net             
+OCT-2026         22      697,050.75      110,350.90      586,699.85             
+Account 12 (LC0000000012) funded with 1000.00                                   
+Two jobs started, each withdrawing 700.00. Waiting 15 seconds...                
+Successful withdrawals : 1                                                      
+Rejected withdrawals   : 1                                                      
+Final balance          : 300.00                                                 
+PASS  T18 Concurrent withdrawals: exactly one succeeded, no overdraft, no lost  
+update                                                                          
+
+JOB_NAME                         STATUS      ERROR# STARTED     DURATION        
+-------------------------------- ---------- ------- ----------- --------------  
+LC_CONC_20261023222822_2         FAILED       20004 10:58:22.31 +000 00:00:06   
+LC_CONC_20261023222822_1         SUCCEEDED        0 10:58:22.18 +000 00:00:03   
+Generated 20,000 deposits over 50 accounts                                                                                                                                                              
+Elapsed: 00:00:11.05
+
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+Elapsed: 00:00:00.00
+
+TOTAL_ENTRIES                                                                                                                                                                                           
+-------------                                                                                                                                                                                           
+        20024                                                                                                                                                                                           
+Elapsed: 00:00:00.00
+
+ENTRIES_FOR_THIS_ACCOUNT                                                                                                                                                                                
+------------------------                                                                                                                                                                                
+                     400                                                                                                                                                                                
+Elapsed: 00:00:00.00
+Elapsed: 00:00:00.00
+Elapsed: 00:00:02.12
+
+===== PLAN BEFORE INDEX =====
+Elapsed: 00:00:00.02
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 1495218584                                                                                                                                                                             
+                                                                                                                                                                                                        
+---------------------------------------------------------------------------------------------------------------                                                                                         
+| Id  | Operation                            | Name                   | Rows  | Bytes | Cost (%CPU)| Time     |                                                                                         
+---------------------------------------------------------------------------------------------------------------                                                                                         
+|   0 | SELECT STATEMENT                     |                        |    20 |   740 |    49   (3)| 00:00:01 |                                                                                         
+|   1 |  SORT ORDER BY                       |                        |    20 |   740 |    49   (3)| 00:00:01 |                                                                                         
+|*  2 |   TABLE ACCESS BY INDEX ROWID BATCHED| ACCOUNT_ENTRIES        |    20 |   740 |    48   (0)| 00:00:01 |                                                                                         
+|*  3 |    INDEX SKIP SCAN                   | UQ_ENTRIES_TXN_ACCOUNT |   400 |       |    45   (0)| 00:00:01 |                                                                                         
+---------------------------------------------------------------------------------------------------------------                                                                                         
+                                                                                                                                                                                                        
+Predicate Information (identified by operation id):                                                                                                                                                     
+---------------------------------------------------                                                                                                                                                     
+                                                                                                                                                                                                        
+   2 - filter(SYS_EXTRACT_UTC(INTERNAL_FUNCTION("CREATED_AT"))>=SYS_EXTRACT_UTC(SYSTIMESTAMP(6)-INTERVA                                                                                                 
+              L'+30 00:00:00' DAY(2) TO SECOND(0)))                                                                                                                                                     
+   3 - access("ACCOUNT_ID"=13)                                                                                                                                                                          
+       filter("ACCOUNT_ID"=13)                                                                                                                                                                          
+Elapsed: 00:00:00.26
+
+ROWS_RETURNED                                                                                                                                                                                           
+-------------                                                                                                                                                                                           
+          400                                                                                                                                                                                           
+Elapsed: 00:00:00.00
+Elapsed: 00:00:00.09
+Elapsed: 00:00:01.57
+
+===== PLAN AFTER INDEX =====
+Elapsed: 00:00:00.00
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 208760498                                                                                                                                                                              
+                                                                                                                                                                                                        
+--------------------------------------------------------------------------------------------------------                                                                                                
+| Id  | Operation                   | Name                     | Rows  | Bytes | Cost (%CPU)| Time     |                                                                                                
+--------------------------------------------------------------------------------------------------------                                                                                                
+|   0 | SELECT STATEMENT            |                          |    20 |   740 |    10   (0)| 00:00:01 |                                                                                                
+|   1 |  TABLE ACCESS BY INDEX ROWID| ACCOUNT_ENTRIES          |    20 |   740 |    10   (0)| 00:00:01 |                                                                                                
+|*  2 |   INDEX RANGE SCAN          | IDX_ENTRIES_ACCOUNT_TIME |    20 |       |     3   (0)| 00:00:01 |                                                                                                
+--------------------------------------------------------------------------------------------------------                                                                                                
+                                                                                                                                                                                                        
+Predicate Information (identified by operation id):                                                                                                                                                     
+---------------------------------------------------                                                                                                                                                     
+                                                                                                                                                                                                        
+   2 - access("ACCOUNT_ID"=13)                                                                                                                                                                          
+       filter(SYS_EXTRACT_UTC(INTERNAL_FUNCTION("CREATED_AT"))>=SYS_EXTRACT_UTC(SYSTIMESTAMP(6)-                                                                                                        
+              INTERVAL'+30 00:00:00' DAY(2) TO SECOND(0)))                                                                                                                                              
+Elapsed: 00:00:00.03
+
+ROWS_RETURNED                                                                                                                                                                                           
+-------------                                                                                                                                                                                           
+          400                                                                                                                                                                                           
+Elapsed: 00:00:00.00
+
+===== LOW-SELECTIVITY QUERY (index not useful) =====
+Elapsed: 00:00:00.00
+
+PLAN_TABLE_OUTPUT                                                                                                                                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Plan hash value: 2955227079                                                                                                                                                                             
+                                                                                                                                                                                                        
+--------------------------------------------------------------------------------------                                                                                                                  
+| Id  | Operation          | Name            | Rows  | Bytes | Cost (%CPU)| Time     |                                                                                                                  
+--------------------------------------------------------------------------------------                                                                                                                  
+|   0 | SELECT STATEMENT   |                 |     1 |    16 |    71   (5)| 00:00:01 |                                                                                                                  
+|   1 |  SORT AGGREGATE    |                 |     1 |    16 |            |          |                                                                                                                  
+|*  2 |   TABLE ACCESS FULL| ACCOUNT_ENTRIES |  1001 | 16016 |    71   (5)| 00:00:01 |                                                                                                                  
+--------------------------------------------------------------------------------------                                                                                                                  
+                                                                                                                                                                                                        
+Predicate Information (identified by operation id):                                                                                                                                                     
+---------------------------------------------------                                                                                                                                                     
+                                                                                                                                                                                                        
+   2 - filter(SYS_EXTRACT_UTC(INTERNAL_FUNCTION("CREATED_AT"))>=SYS_EXTRACT_UT                                                                                                                          
+              C(SYSTIMESTAMP(6)-INTERVAL'+30 00:00:00' DAY(2) TO SECOND(0)))                                                                                                                            
+Elapsed: 00:00:00.03
+
+SEGMENT_NAME                                                                                                                        SIZE_KB                                                             
+-------------------------------------------------------------------------------------------------------------------------------- ----------                                                             
+ACCOUNT_ENTRIES                                                                                                                        2048                                                             
+IDX_ENTRIES_ACCOUNT_TIME                                                                                                                704                                                             
+Elapsed: 00:00:00.11
